@@ -1,0 +1,1 @@
+{"version":2,"entries":[{"package":"api_connector","rootUri":"../../../modules/api_connector/","packageUri":"lib/"},{"package":"notification_scheduler","rootUri":"../../../modules/notification_scheduler/","packageUri":"lib/"},{"package":"ui_shell","rootUri":"../../../modules/ui_shell/","packageUri":"lib/"},{"package":"parcel_tracker","rootUri":"../","packageUri":"lib/"}]}

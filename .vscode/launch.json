@@ -1,0 +1,228 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "currency_converter",
+            "cwd": "apps\\currency_converter",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "currency_converter (profile mode)",
+            "cwd": "apps\\currency_converter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "currency_converter (release mode)",
+            "cwd": "apps\\currency_converter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "parcel_tracker",
+            "cwd": "apps\\parcel_tracker",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "parcel_tracker (profile mode)",
+            "cwd": "apps\\parcel_tracker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "parcel_tracker (release mode)",
+            "cwd": "apps\\parcel_tracker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "pdf_converter",
+            "cwd": "apps\\pdf_converter",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "pdf_converter (profile mode)",
+            "cwd": "apps\\pdf_converter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "pdf_converter (release mode)",
+            "cwd": "apps\\pdf_converter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "rent_split_calculator",
+            "cwd": "apps\\rent_split_calculator",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "rent_split_calculator (profile mode)",
+            "cwd": "apps\\rent_split_calculator",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "rent_split_calculator (release mode)",
+            "cwd": "apps\\rent_split_calculator",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "water_reminder",
+            "cwd": "apps\\water_reminder",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "water_reminder (profile mode)",
+            "cwd": "apps\\water_reminder",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "water_reminder (release mode)",
+            "cwd": "apps\\water_reminder",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "analytics_wrapper",
+            "cwd": "modules\\analytics_wrapper",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "analytics_wrapper (profile mode)",
+            "cwd": "modules\\analytics_wrapper",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "analytics_wrapper (release mode)",
+            "cwd": "modules\\analytics_wrapper",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "api_connector",
+            "cwd": "modules\\api_connector",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "api_connector (profile mode)",
+            "cwd": "modules\\api_connector",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "api_connector (release mode)",
+            "cwd": "modules\\api_connector",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "calculator_engine",
+            "cwd": "modules\\calculator_engine",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "calculator_engine (profile mode)",
+            "cwd": "modules\\calculator_engine",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "calculator_engine (release mode)",
+            "cwd": "modules\\calculator_engine",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "file_processor",
+            "cwd": "modules\\file_processor",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "file_processor (profile mode)",
+            "cwd": "modules\\file_processor",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "file_processor (release mode)",
+            "cwd": "modules\\file_processor",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "notification_scheduler",
+            "cwd": "modules\\notification_scheduler",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "notification_scheduler (profile mode)",
+            "cwd": "modules\\notification_scheduler",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "notification_scheduler (release mode)",
+            "cwd": "modules\\notification_scheduler",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "ui_shell",
+            "cwd": "modules\\ui_shell",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ui_shell (profile mode)",
+            "cwd": "modules\\ui_shell",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ui_shell (release mode)",
+            "cwd": "modules\\ui_shell",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

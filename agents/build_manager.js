@@ -5,21 +5,21 @@ import path from 'path';
 const program = new Command();
 
 program
-    .name('build_manager')
-    .description('Build & CI Pipeline Manager Agent')
-    .version('1.0.0');
+  .name('build_manager')
+  .description('Build & CI Pipeline Manager Agent')
+  .version('1.0.0');
 
 program
-    .command('config <appName>')
-    .action(async (appName) => {
-        console.log(`    ⚙️  Configuring CI pipeline for ${appName}...`);
+  .command('config <appName>')
+  .action(async (appName) => {
+    console.log(`    ⚙️  Configuring CI pipeline for ${appName}...`);
 
-        const appDir = path.join('..', 'apps', appName);
-        const workflowsDir = path.join(appDir, '.github', 'workflows');
+    const appDir = path.join('..', 'apps', appName);
+    const workflowsDir = path.join(appDir, '.github', 'workflows');
 
-        await fs.ensureDir(workflowsDir);
+    await fs.ensureDir(workflowsDir);
 
-        const workflowContent = `
+    const workflowContent = `
 name: Build ${appName}
 
 on:
@@ -35,10 +35,14 @@ jobs:
     - run: flutter pub get
     - run: flutter test
     - run: flutter build apk
+    - uses: actions/upload-artifact@v3
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
 `;
-        await fs.writeFile(path.join(workflowsDir, 'main.yml'), workflowContent.trim());
+    await fs.writeFile(path.join(workflowsDir, 'main.yml'), workflowContent.trim());
 
-        console.log(`    ✅ CI workflow created at ${workflowsDir}/main.yml`);
-    });
+    console.log(`    ✅ CI workflow created at ${workflowsDir}/main.yml`);
+  });
 
 program.parse();

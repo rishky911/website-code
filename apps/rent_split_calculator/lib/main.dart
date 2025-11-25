@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:calculator_engine/calculator_engine.dart';
-import 'package:ui_shell/ui_shell.dart';
 
 void main() {
   runApp(const MyApp());

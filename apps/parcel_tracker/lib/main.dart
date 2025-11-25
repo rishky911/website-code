@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:api_connector/api_connector.dart';
-import 'package:notification_scheduler/notification_scheduler.dart';
-import 'package:ui_shell/ui_shell.dart';
 
 void main() {
   runApp(const MyApp());
