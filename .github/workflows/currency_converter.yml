@@ -1,0 +1,22 @@
+name: Build currency_converter
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+    - run: flutter pub get
+      working-directory: apps/currency_converter
+    - run: flutter test
+      working-directory: apps/currency_converter
+    - run: flutter build apk
+      working-directory: apps/currency_converter
+    - uses: actions/upload-artifact@v3
+      with:
+        name: currency-converter-apk
+        path: apps/currency_converter/build/app/outputs/flutter-apk/app-release.apk

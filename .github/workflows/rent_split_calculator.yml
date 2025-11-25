@@ -1,0 +1,22 @@
+name: Build rent_split_calculator
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+    - run: flutter pub get
+      working-directory: apps/rent_split_calculator
+    - run: flutter test
+      working-directory: apps/rent_split_calculator
+    - run: flutter build apk
+      working-directory: apps/rent_split_calculator
+    - uses: actions/upload-artifact@v3
+      with:
+        name: rent-split-calculator-apk
+        path: apps/rent_split_calculator/build/app/outputs/flutter-apk/app-release.apk

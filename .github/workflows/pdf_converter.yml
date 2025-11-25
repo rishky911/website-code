@@ -1,0 +1,22 @@
+name: Build pdf_converter
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+    - run: flutter pub get
+      working-directory: apps/pdf_converter
+    - run: flutter test
+      working-directory: apps/pdf_converter
+    - run: flutter build apk
+      working-directory: apps/pdf_converter
+    - uses: actions/upload-artifact@v3
+      with:
+        name: pdf-converter-apk
+        path: apps/pdf_converter/build/app/outputs/flutter-apk/app-release.apk
