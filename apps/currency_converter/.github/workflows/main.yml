@@ -1,0 +1,15 @@
+name: Build currency_converter
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+    - run: flutter pub get
+    - run: flutter test
+    - run: flutter build apk

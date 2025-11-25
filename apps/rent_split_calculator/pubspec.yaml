@@ -1,0 +1,12 @@
+name: rent_split_calculator
+description: Generated app rent_split_calculator
+version: 1.0.0+1
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  calculator_engine:
+    path: ../../modules/calculator_engine
+  ui_shell:
+    path: ../../modules/ui_shell
