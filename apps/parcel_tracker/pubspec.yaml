@@ -12,3 +12,7 @@ dependencies:
     path: ../../modules/notification_scheduler
   ui_shell:
     path: ../../modules/ui_shell
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

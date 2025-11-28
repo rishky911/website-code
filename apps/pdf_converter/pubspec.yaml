@@ -10,3 +10,7 @@ dependencies:
     path: ../../modules/file_processor
   ui_shell:
     path: ../../modules/ui_shell
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

@@ -32,6 +32,10 @@ dependencies:
   flutter:
     sdk: flutter
 ${modules.map(m => `  ${m}:\n    path: ../../modules/${m}`).join('\n')}
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 `;
     await fs.writeFile(path.join(appDir, 'pubspec.yaml'), pubspecContent.trim());
 
