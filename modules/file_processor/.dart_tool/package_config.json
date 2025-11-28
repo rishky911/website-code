@@ -14,6 +14,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "cross_file",
+      "rootUri": "file:///C:/Users/dell/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.5+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///C:/Users/dell/flutter/packages/flutter",
       "packageUri": "lib/",
@@ -42,6 +48,12 @@
       "rootUri": "file:///C:/Users/dell/AppData/Local/Pub/Cache/hosted/pub.dev/vector_math-2.2.0",
       "packageUri": "lib/",
       "languageVersion": "3.1"
+    },
+    {
+      "name": "web",
+      "rootUri": "file:///C:/Users/dell/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
     },
     {
       "name": "file_processor",

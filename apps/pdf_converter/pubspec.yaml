@@ -10,6 +10,7 @@ dependencies:
     path: ../../modules/file_processor
   ui_shell:
     path: ../../modules/ui_shell
+  cross_file: ^0.3.5+1
 
 dev_dependencies:
   flutter_test:
