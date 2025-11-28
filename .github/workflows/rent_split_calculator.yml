@@ -10,6 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
+    - run: flutter create .
+      working-directory: apps/rent_split_calculator
     - run: flutter pub get
       working-directory: apps/rent_split_calculator
     - run: flutter test

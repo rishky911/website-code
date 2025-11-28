@@ -10,6 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
+    - run: flutter create .
+      working-directory: apps/parcel_tracker
     - run: flutter pub get
       working-directory: apps/parcel_tracker
     - run: flutter test
