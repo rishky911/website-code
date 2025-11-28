@@ -16,7 +16,7 @@ jobs:
       working-directory: apps/rent_split_calculator
     - run: flutter build apk
       working-directory: apps/rent_split_calculator
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: rent-split-calculator-apk
         path: apps/rent_split_calculator/build/app/outputs/flutter-apk/app-release.apk

@@ -35,7 +35,7 @@ jobs:
     - run: flutter pub get
     - run: flutter test
     - run: flutter build apk
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: release-apk
         path: build/app/outputs/flutter-apk/app-release.apk

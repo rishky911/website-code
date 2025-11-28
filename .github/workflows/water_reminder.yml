@@ -16,7 +16,7 @@ jobs:
       working-directory: apps/water_reminder
     - run: flutter build apk
       working-directory: apps/water_reminder
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: water-reminder-apk
         path: apps/water_reminder/build/app/outputs/flutter-apk/app-release.apk
