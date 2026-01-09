@@ -1,0 +1,45 @@
+name: Factory Audit (CI)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  audit-factory:
+    name: 🏭 Factory Inspector
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout Conveyor Belt
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: 🔍 Audit Modules (Raw Parts)
+        run: |
+          for dir in modules/*/; do
+            if [ -f "$dir/pubspec.yaml" ]; then
+              echo "Checking Module: $dir"
+              cd "$dir"
+              flutter pub get
+              flutter analyze . || echo "⚠️ Analysis issues in $dir"
+              flutter test || echo "⚠️ Tests failed in $dir"
+              cd -
+            fi
+          done
+
+      - name: 🧸 Audit Apps (Finished Toys)
+        run: |
+          for dir in apps/*/; do
+            if [ -f "$dir/pubspec.yaml" ]; then
+              echo "Checking App: $dir"
+              cd "$dir"
+              flutter pub get
+              flutter analyze . || echo "⚠️ Analysis issues in $dir"
+              flutter test || echo "⚠️ Tests failed in $dir"
+              cd -
+            fi
+          done

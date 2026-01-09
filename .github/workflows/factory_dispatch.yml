@@ -1,0 +1,41 @@
+name: 🏭 Factory Control Panel
+
+on:
+    workflow_dispatch:
+        inputs:
+            app_name:
+                description: "Select App to Build"
+                required: true
+                type: choice
+                options:
+                    - templates/base_app
+                    - apps/identify_anything
+                    - apps/coin_id
+                    - apps/outfit_generator
+                    - apps/text_to_voice
+                    - apps/period_tracker
+                    - apps/mood_journal
+            target_platform:
+                description: "Target Platform"
+                required: true
+                type: choice
+                default: "android"
+                options:
+                    - android
+                    - ios
+                    - all
+
+jobs:
+    dispatch-android:
+        if: inputs.target_platform == 'android' || inputs.target_platform == 'all'
+        uses: ./.github/workflows/templates/build_android.yml
+        with:
+            working_directory: ${{ inputs.app_name }}
+            build_name: ${{ github.event.inputs.app_name }}-android
+
+    dispatch-ios:
+        if: inputs.target_platform == 'ios' || inputs.target_platform == 'all'
+        uses: ./.github/workflows/templates/build_ios.yml
+        with:
+            working_directory: ${{ inputs.app_name }}
+            build_name: ${{ github.event.inputs.app_name }}-ios

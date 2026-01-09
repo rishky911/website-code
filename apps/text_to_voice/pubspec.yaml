@@ -1,0 +1,36 @@
+name: text_to_voice
+description: High-Fidelity AI Text to Speech Reader.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Factory Standard Core
+  go_router: ^12.0.0
+  flutter_riverpod: ^2.4.0
+  google_fonts: ^6.3.2
+
+  # Feature Dependencies
+  just_audio: ^0.9.35
+  http: ^1.1.0
+  path_provider: ^2.1.1
+  shared_preferences: ^2.2.2
+
+  # Factory Modules
+  ui_shell:
+    path: ../../modules/ui_shell
+  analytics_wrapper:
+    path: ../../modules/analytics_wrapper
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
