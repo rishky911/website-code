@@ -1,15 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_shell/ui_shell.dart';
 import 'package:analytics_wrapper/analytics_wrapper.dart';
+import 'package:onboarding_manager/onboarding_manager.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Log screen view
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
     AnalyticsWrapper().logScreenView(screenName: 'HomeScreen');
+
+    // Check Onboarding
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final hasSeen = ref.read(onboardingServiceProvider).hasSeenOnboarding;
+      if (!hasSeen) {
+        context.go('/onboarding');
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return FactoryScaffold(
       title: 'Factory App',

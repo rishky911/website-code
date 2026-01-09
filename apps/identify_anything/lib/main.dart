@@ -3,10 +3,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui_shell/ui_shell.dart';
 import 'router.dart';
 
-void main() {
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:onboarding_manager/onboarding_manager.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Init RevenueCat (Debug Mode)
+  final subscriptionService = SubscriptionService();
+  await subscriptionService.init("DEBUG_KEY");
+
+  // Init Onboarding
+  final prefs = await SharedPreferences.getInstance();
+  final onboardingService = OnboardingService(prefs);
+
   runApp(
-    const ProviderScope(
-      child: FactoryApp(),
+    ProviderScope(
+      overrides: [
+        subscriptionServiceProvider.overrideWith((ref) => subscriptionService),
+        onboardingServiceProvider.overrideWith((ref) => onboardingService),
+      ],
+      child: const FactoryApp(),
     ),
   );
 }

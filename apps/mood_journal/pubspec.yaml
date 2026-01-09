@@ -36,6 +36,19 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   isar_generator: ^3.1.0
   build_runner: ^2.4.6
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "../../assets/master_icon.png"
+
+flutter_native_splash:
+  color: "#121212"
+  image: "../../assets/master_icon.png"
+  android_12:
+    image: "../../assets/master_icon.png"
+    icon_background_color: "#121212"
 
 flutter:
   uses-material-design: true

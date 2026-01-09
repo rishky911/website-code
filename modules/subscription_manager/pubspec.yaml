@@ -1,0 +1,20 @@
+name: subscription_manager
+description: A standardized wrapper for RevenueCat to handle subscriptions and entitlements.
+version: 0.0.1
+publish_to: "none"
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  purchases_flutter: ^6.4.0
+  flutter_riverpod: ^2.4.0
+  ui_shell:
+    path: ../ui_shell
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0

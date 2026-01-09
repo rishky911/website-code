@@ -22,6 +22,10 @@ dependencies:
   permission_handler: ^11.0.1
 
   # Factory Modules
+  subscription_manager:
+    path: ../../modules/subscription_manager
+  onboarding_manager:
+    path: ../../modules/onboarding_manager
   ui_shell:
     path: ../../modules/ui_shell
   analytics_wrapper:
@@ -31,6 +35,19 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "../../assets/master_icon.png"
+
+flutter_native_splash:
+  color: "#121212"
+  image: "../../assets/master_icon.png"
+  android_12:
+    image: "../../assets/master_icon.png"
+    icon_background_color: "#121212"
 
 flutter:
   uses-material-design: true

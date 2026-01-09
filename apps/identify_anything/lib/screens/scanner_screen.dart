@@ -5,14 +5,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:ui_shell/ui_shell.dart';
 import '../services/vision_service.dart';
 
-class ScannerScreen extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:subscription_manager/subscription_manager.dart';
+
+class ScannerScreen extends ConsumerStatefulWidget {
   const ScannerScreen({super.key});
 
   @override
-  State<ScannerScreen> createState() => _ScannerScreenState();
+  ConsumerState<ScannerScreen> createState() => _ScannerScreenState();
 }
 
-class _ScannerScreenState extends State<ScannerScreen> {
+class _ScannerScreenState extends ConsumerState<ScannerScreen> {
   CameraController? _controller;
   bool _isCameraInitialized = false;
   bool _isProcessing = false;
@@ -45,13 +48,24 @@ class _ScannerScreenState extends State<ScannerScreen> {
     }
   }
 
+  int _scanCount = 0;
+
   Future<void> _snapAndAnalyze() async {
     if (!_isCameraInitialized || _isProcessing) return;
+
+    // Factory Gate: Check Limits
+    final isPro = ref.read(subscriptionServiceProvider).isPro;
+    if (!isPro && _scanCount >= 3) {
+      _showPaywall();
+      return;
+    }
 
     setState(() => _isProcessing = true);
 
     try {
       final image = await _controller!.takePicture();
+      _scanCount++; // Increment usage
+      
       final inputImage = InputImage.fromFilePath(image.path);
       
       final result = await VisionService().processImage(inputImage, _currentMode);
@@ -67,6 +81,22 @@ class _ScannerScreenState extends State<ScannerScreen> {
       debugPrint("Error: $e");
       setState(() => _isProcessing = false);
     }
+  }
+
+  void _showPaywall() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PaywallScreen(
+          featureName: "Unlimited Scans",
+          onSuccess: () {
+            Navigator.pop(context); // Close paywall
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You are now Pro! scanning...")));
+            _snapAndAnalyze(); // Retrieve the scan they tried to do? Or just let them click again.
+          },
+        ),
+      ),
+    );
   }
 
   void _showResultSheet(String result) {
