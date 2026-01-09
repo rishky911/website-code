@@ -103,7 +103,7 @@ class _CurrencyConverterHomePageState extends State<CurrencyConverterHomePage> {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: _fromCurrency,
+                          initialValue: _fromCurrency,
                           items: _rates.keys.map((currency) {
                             return DropdownMenuItem(
                               value: currency,
@@ -123,7 +123,7 @@ class _CurrencyConverterHomePageState extends State<CurrencyConverterHomePage> {
                       ),
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: _toCurrency,
+                          initialValue: _toCurrency,
                           items: _rates.keys.map((currency) {
                             return DropdownMenuItem(
                               value: currency,

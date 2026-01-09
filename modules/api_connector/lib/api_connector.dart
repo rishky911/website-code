@@ -1,6 +1,5 @@
 library api_connector;
 
-import 'dart:convert';
 
 class ApiConnector {
   Future<Map<String, dynamic>> get(String endpoint) async {
