@@ -99,10 +99,33 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
     );
   }
 
+  Widget _buildModeBtn(String label, ScanMode mode) {
+    final isSelected = _currentMode == mode;
+    return GestureDetector(
+      onTap: () => setState(() => _currentMode = mode),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? FactoryColors.secondary : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.black : Colors.white60,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            fontSize: 14,
+          ),
+        ),
+      ),
+    );
+  }
+
   void _showResultSheet(String result) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) => FactoryCard(
         child: Container(
           width: double.infinity,
@@ -110,19 +133,34 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              SizedBox(height: 24),
+              Icon(Icons.auto_awesome, color: FactoryColors.secondary, size: 32),
+              SizedBox(height: 16),
               Text(
-                "I see:",
-                style:  Theme.of(context).textTheme.titleMedium,
+                "Analysis Complete",
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.grey),
               ),
               SizedBox(height: 8),
               Text(
                 result,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: FactoryColors.primary,
+                ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 24),
               FactoryButton(
-                label: "Scan Again",
+                label: "Scan Another",
+                icon: Icons.camera,
                 onPressed: () => Navigator.pop(context),
               )
             ],
@@ -130,13 +168,6 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    VisionService().dispose();
-    super.dispose();
   }
 
   @override
@@ -148,85 +179,126 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
       );
     }
 
+    final isPro = ref.watch(subscriptionServiceProvider).isPro;
+    final remaining = 3 - _scanCount;
+
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           // Camera Layer
           SizedBox.expand(child: CameraPreview(_controller!)),
           
+          // Overlay Gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black54,
+                    Colors.transparent,
+                    Colors.transparent,
+                    Colors.black87,
+                  ],
+                ),
+              ),
+            ),
+          ),
+
           // UI Layer
           SafeArea(
             child: Column(
               children: [
+                // Top Bar: Back + Pro Status
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.black45,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                      Spacer(),
+                      if (!isPro)
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: remaining > 0 ? Colors.black54 : Colors.red,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.white24),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.bolt, color: FactoryColors.tertiary, size: 16),
+                              SizedBox(width: 4),
+                              Text(
+                                "$remaining Free Scans",
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+
                 // Mode Switcher
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   margin: EdgeInsets.only(top: 16),
+                  padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: Colors.black54,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _buildModeBtn("Object", ScanMode.object),
-                      SizedBox(width: 16),
-                      _buildModeBtn("Text", ScanMode.text),
+                      _buildModeBtn("Identify", ScanMode.object),
+                      _buildModeBtn("Read Text", ScanMode.text),
                     ],
                   ),
                 ),
+
                 Spacer(),
+
                 // Shutter Button
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 32.0),
+                  padding: const EdgeInsets.only(bottom: 48.0),
                   child: GestureDetector(
                     onTap: _snapAndAnalyze,
-                    child: Container(
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: _isProcessing ? Colors.white : Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(color: FactoryColors.primary, width: 4),
+                        border: Border.all(color: Colors.white, width: 4),
                       ),
-                      child: _isProcessing 
-                        ? CircularProgressIndicator()
-                        : Icon(Icons.camera_alt, color: FactoryColors.primary, size: 40),
+                      child: Center(
+                        child: _isProcessing 
+                          ? Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator(strokeWidth: 2))
+                          : Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          
-          // Back Button
-          Positioned(
-            top: 48,
-            left: 16,
-            child: CircleAvatar(
-              backgroundColor: Colors.black45,
-              child: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ),
-          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildModeBtn(String label, ScanMode mode) {
-    final isSelected = _currentMode == mode;
-    return GestureDetector(
-      onTap: () => setState(() => _currentMode = mode),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? FactoryColors.secondary : Colors.white60,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          fontSize: 16,
-        ),
       ),
     );
   }

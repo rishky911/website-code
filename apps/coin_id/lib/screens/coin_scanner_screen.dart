@@ -164,18 +164,22 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           // Camera
           SizedBox.expand(child: CameraPreview(_controller!)),
           
-          // Reference Overlay (Coin Circle)
+          // Reference Overlay (Coin Circle) with pulse effect (simulated via simple transparency for now)
           Center(
             child: Container(
               width: 280, height: 280,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withOpacity(0.5), width: 2),
+                border: Border.all(color: Colors.white.withOpacity(0.8), width: 2),
+                boxShadow: [
+                   BoxShadow(color: Colors.black45, spreadRadius: 1000) // Vignette effect mask
+                ]
               ),
             ),
           ),
@@ -186,28 +190,42 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "Align coin within circle",
-                    style: TextStyle(color: Colors.white, fontSize: 16, shadows: [Shadow(blurRadius: 4, color: Colors.black)]),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(20)),
+                    child: Text(
+                      "Align coin within circle",
+                      style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
                 Spacer(),
-                // Shutter
+                // Shutter Button
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 32.0),
+                  padding: const EdgeInsets.only(bottom: 48.0),
                   child: GestureDetector(
                     onTap: _snapAndIdentify,
-                    child: Container(
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
                       width: 80, height: 80,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: _isProcessing ? Colors.white : Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(color: FactoryColors.primary, width: 4),
-                        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
+                        border: Border.all(color: Colors.white, width: 4),
                       ),
-                      child: _isProcessing 
-                        ? CircularProgressIndicator()
-                        : Icon(Icons.search, color: FactoryColors.primary, size: 40),
+                      child: Center(
+                         child: _isProcessing 
+                          ? Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator(strokeWidth: 2))
+                          : Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.search, color: Colors.black),
+                            ),
+                      ),
                     ),
                   ),
                 ),

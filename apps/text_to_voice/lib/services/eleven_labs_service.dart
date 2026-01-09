@@ -25,7 +25,7 @@ class ElevenLabsService {
   
   Future<String?> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('eleven_api_key');
+    return prefs.getString('eleven_api_key') ?? "sk_27ecfa3889462da658357695f5b8980356b0b0db418096a4";
   }
 
   Future<void> setApiKey(String key) async {

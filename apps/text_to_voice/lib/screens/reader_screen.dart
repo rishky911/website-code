@@ -10,17 +10,19 @@ class ReaderScreen extends StatefulWidget {
   State<ReaderScreen> createState() => _ReaderScreenState();
 }
 
-class _ReaderScreenState extends State<ReaderScreen> {
+class _ReaderScreenState extends State<ReaderScreen> with TickerProviderStateMixin {
   final TextEditingController _textController = TextEditingController();
   List<Voice> _voices = [];
   Voice? _selectedVoice;
   bool _isLoading = false;
-  bool _isPlaying = false;
+
+  late AnimationController _visualizerController;
 
   @override
   void initState() {
     super.initState();
     _loadVoices();
+    _visualizerController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000))..repeat();
   }
 
   Future<void> _loadVoices() async {
@@ -46,28 +48,25 @@ class _ReaderScreenState extends State<ReaderScreen> {
         _selectedVoice?.id ?? 'demo'
       );
 
+      if (mounted) setState(() => _isLoading = false);
+
       if (path != null) {
-        if (mounted) setState(() => _isLoading = false);
         await AudioPlayerService().playFile(path);
       } else {
-         if (mounted) setState(() => _isLoading = false);
          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to generate audio')));
       }
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.toString()),
-          action: SnackBarAction(label: 'Settings', onPressed: () {
-            // Navigate to settings?
-          }),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
       }
     }
   }
 
-  Future<void> _stop() async {
-    await AudioPlayerService().stop();
+  @override
+  void dispose() {
+    _visualizerController.dispose();
+    super.dispose();
   }
 
   @override
@@ -80,19 +79,31 @@ class _ReaderScreenState extends State<ReaderScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Voice Selector
-            DropdownButtonFormField<Voice>(
-              value: _selectedVoice,
-              decoration: InputDecoration(
-                labelText: 'Select Voice',
-                border: OutlineInputBorder(),
-                filled: true,
-                fillColor: Colors.white,
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
               ),
-              items: _voices.map((v) => DropdownMenuItem(
-                value: v,
-                child: Text(v.name),
-              )).toList(),
-              onChanged: (v) => setState(() => _selectedVoice = v),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<Voice>(
+                  value: _selectedVoice,
+                  hint: Text('Select Voice'),
+                  isExpanded: true,
+                  items: _voices.map((v) => DropdownMenuItem(
+                    value: v,
+                    child: Row(
+                      children: [
+                        Icon(Icons.person, color: FactoryColors.primary),
+                        SizedBox(width: 8),
+                        Text(v.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  )).toList(),
+                  onChanged: (v) => setState(() => _selectedVoice = v),
+                ),
+              ),
             ),
             SizedBox(height: 16),
             
@@ -112,29 +123,80 @@ class _ReaderScreenState extends State<ReaderScreen> {
               ),
             ),
             SizedBox(height: 24),
-            
-            // Controls
-            Row(
-              children: [
-                Expanded(
-                  child: FactoryButton(
-                    label: _isLoading ? 'Generating...' : 'Speak',
-                    icon: Icons.record_voice_over,
-                    isLoading: _isLoading,
-                    onPressed: _generateAndPlay,
-                  ),
-                ),
-                SizedBox(width: 16),
-                FloatingActionButton(
-                  backgroundColor: FactoryColors.error,
-                  child: Icon(Icons.stop),
-                  onPressed: _stop,
-                ),
-              ],
+
+            // Visualizer & Controls
+            StreamBuilder( // TODO: Fix type
+              stream: AudioPlayerService().playerStateStream,
+              builder: (context, snapshot) {
+                // final playerState = snapshot.data;
+                // final isPlaying = playerState?.playing ?? false; 
+                // We don't have PlayerState type import easily without just_audio, 
+                // checking AudioPlayerService.isPlaying in a loop or assumed state.
+                // Simpler: Just rely on local isPlaying wrapper if we had one, but better to trust the future.
+                // Actually, let's just use the stream to trigger rebuilds.
+                final isPlaying = AudioPlayerService().isPlaying;
+
+                return Column(
+                  children: [
+                    if (isPlaying)
+                      SizedBox(
+                        height: 48,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(10, (index) => _buildBar(index, _visualizerController)),
+                        ),
+                      )
+                    else 
+                      SizedBox(height: 48),
+
+                    SizedBox(height: 16),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FactoryButton(
+                            label: _isLoading ? 'Generating...' : (isPlaying ? 'Playing...' : 'Speak'),
+                            icon: isPlaying ? Icons.volume_up : Icons.record_voice_over,
+                            isLoading: _isLoading,
+                            onPressed: isPlaying ? null : _generateAndPlay,
+                          ),
+                        ),
+                        if (isPlaying) ...[
+                          SizedBox(width: 16),
+                          FloatingActionButton(
+                            backgroundColor: FactoryColors.error,
+                            child: Icon(Icons.stop),
+                            onPressed: () => AudioPlayerService().stop(),
+                          ),
+                        ]
+                      ],
+                    ),
+                  ],
+                );
+              }
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildBar(int index, AnimationController controller) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        // Random-ish height based on sine wave with offset
+        final height = 10 + 30 * (0.5 + 0.5 * (controller.value * 2 * 3.14 + index).sin()).abs();
+        return Container(
+          margin: EdgeInsets.symmetric(horizontal: 2),
+          width: 6,
+          height: height,
+          decoration: BoxDecoration(
+            color: FactoryColors.secondary,
+            borderRadius: BorderRadius.circular(3),
+          ),
+        );
+      },
     );
   }
 }

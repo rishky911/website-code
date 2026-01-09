@@ -13,7 +13,8 @@ class SentimentService {
 
   Future<String?> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('gemini_api_key');
+    // Return saved key or default to injected key
+    return prefs.getString('gemini_api_key') ?? "AIzaSyBkvwclQeQebTefRC88_rJ7jE3e3EAdfJ4";
   }
 
   Future<void> setApiKey(String key) async {

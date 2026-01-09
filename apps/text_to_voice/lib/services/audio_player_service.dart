@@ -13,6 +13,7 @@ class AudioPlayerService {
   final AudioPlayer _player = AudioPlayer();
   
   bool get isPlaying => _player.playing;
+  Stream<PlayerState> get playerStateStream => _player.playerStateStream;
 
   Future<void> playFile(String path) async {
     try {

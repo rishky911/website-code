@@ -9,9 +9,9 @@ import 'package:onboarding_manager/onboarding_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Init RevenueCat (Debug Mode)
+  // Init RevenueCat
   final subscriptionService = SubscriptionService();
-  await subscriptionService.init("DEBUG_KEY");
+  await subscriptionService.init("sk_hBvxmhjvyQOqPycfDvulkovRHOFSS");
 
   // Init Onboarding
   final prefs = await SharedPreferences.getInstance();
