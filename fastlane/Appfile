@@ -1,0 +1,9 @@
+# Global Appfile
+# Each lane can override these if needed, or we can use the 'app' parameter to look up IDs.
+
+# For now, we will use placeholders.
+apple_id("admin@silverkuiper.com") # Your Apple email address
+itc_team_id("987654321") # App Store Connect Team ID
+team_id("ABC123DEF4") # Developer Portal Team ID
+
+# To select a specific app, we will use the package_name option in the Fastfile

@@ -1,0 +1,58 @@
+default_platform(:android)
+
+platform :android do
+  desc "Deploy a specific app to the Play Store"
+  lane :deploy do |options|
+    app = options[:app]
+    UI.user_error!("Use 'fastlane android deploy app:your_app_name'") unless app
+
+    UI.message "🚀 Launching deployment for: #{app}"
+    
+    # Path to the specific app's android directory
+    project_dir = "apps/#{app}/android"
+
+    # 1. Build the App Bundle
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: project_dir
+    )
+
+    # 2. Upload to Play Store (Track: Internal)
+    # upload_to_play_store(
+    #   track: "internal",
+    #   aab: "#{project_dir}/app/build/outputs/bundle/release/app-release.aab",
+    #   package_name: options[:package_name] || "com.silverkuiper.#{app}",
+    #   json_key: "android_key.json"
+    # )
+    
+    UI.success "✅ #{app} successfully built and (simulated) uploaded!"
+  end
+end
+
+platform :ios do
+  desc "Deploy a specific app to TestFlight"
+  lane :deploy do |options|
+    app = options[:app]
+    UI.user_error!("Use 'fastlane ios deploy app:your_app_name'") unless app
+
+    UI.message "🍎 Launching iOS deployment for: #{app}"
+
+    # Path to the specific app's ios directory
+    project_dir = "apps/#{app}/ios"
+
+    # 1. Build the App
+    build_app(
+      workspace: "#{project_dir}/Runner.xcworkspace",
+      scheme: "Runner",
+      output_directory: "build/#{app}/ios"
+    )
+
+    # 2. Upload to TestFlight
+    # upload_to_testflight(
+    #   ipa: "build/#{app}/ios/Runner.ipa"
+    # )
+    
+    UI.success "✅ #{app} successfully built for iOS!"
+  end
+end
