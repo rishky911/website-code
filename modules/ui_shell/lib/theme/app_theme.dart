@@ -38,7 +38,7 @@ class FactoryTheme {
         displayLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
         bodyLarge: TextStyle(color: Colors.black87),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: FactoryColors.surfaceLight,
@@ -72,7 +72,7 @@ class FactoryTheme {
         displayLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         bodyLarge: TextStyle(color: Colors.white70),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: FactoryColors.surfaceDark,

@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  purchases_flutter: ^6.4.0
+  purchases_flutter: ^9.10.0
   flutter_riverpod: ^2.4.0
   ui_shell:
     path: ../ui_shell
