@@ -16,7 +16,7 @@ dependencies:
   google_fonts: ^6.3.2
 
   # Feature Dependencies
-  tflite_flutter: ^0.10.1
+  # tflite_flutter: ^0.10.1
   camera: ^0.10.5
   http: ^1.1.0
   intl: ^0.18.1

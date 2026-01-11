@@ -28,7 +28,8 @@ class HomeScreen extends StatelessWidget {
             FactoryCard(
               child: Column(
                 children: [
-                  const Icon(Icons.star, size: 48, color: FactoryColors.tertiary),
+                  const Icon(Icons.star,
+                      size: 48, color: FactoryColors.tertiary),
                   const SizedBox(height: 16),
                   Text(
                     'Welcome to the Factory',
@@ -48,7 +49,9 @@ class HomeScreen extends StatelessWidget {
               label: 'Primary Action',
               icon: Icons.rocket_launch,
               onPressed: () {
-                AnalyticsWrapper().logEvent(name: 'button_clicked', parameters: {'label': 'Primary Action'});
+                AnalyticsWrapper().logEvent(
+                    name: 'button_clicked',
+                    parameters: {'label': 'Primary Action'});
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Action Triggered!')),
                 );
@@ -57,7 +60,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             FactoryButton(
               label: 'Scan Coin',
-              icon: Icons.monetIZATION_on, // Or just search
+              icon: Icons.monetization_on, // Or just search
               onPressed: () => context.go('/scanner'),
             ),
           ],
