@@ -28,14 +28,14 @@ on:
 jobs:
     dispatch-android:
         if: inputs.target_platform == 'android' || inputs.target_platform == 'all'
-        uses: ./.github/workflows/templates/build_android.yml
+        uses: ./.github/workflows/build_android.yml
         with:
             working_directory: ${{ inputs.app_name }}
             build_name: ${{ github.event.inputs.app_name }}-android
 
     dispatch-ios:
         if: inputs.target_platform == 'ios' || inputs.target_platform == 'all'
-        uses: ./.github/workflows/templates/build_ios.yml
+        uses: ./.github/workflows/build_ios.yml
         with:
             working_directory: ${{ inputs.app_name }}
             build_name: ${{ github.event.inputs.app_name }}-ios

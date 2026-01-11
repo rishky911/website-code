@@ -1,0 +1,42 @@
+name: Reusable Android Build
+
+on:
+    workflow_call:
+        inputs:
+            working_directory:
+                required: true
+                type: string
+                description: "Path to the app (e.g. apps/coin_id)"
+            build_name:
+                required: true
+                type: string
+                description: "Name of the artifact (e.g. coin-id-release)"
+
+jobs:
+    build-android:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - uses: actions/setup-java@v3
+              with:
+                  distribution: "zulu"
+                  java-version: "17"
+
+            - uses: subosito/flutter-action@v2
+              with:
+                  channel: "stable"
+
+            - name: 📦 Install Dependencies
+              working-directory: ${{ inputs.working_directory }}
+              run: flutter pub get
+
+            - name: 🛠️ Build AppBundle
+              working-directory: ${{ inputs.working_directory }}
+              run: flutter build appbundle --release --no-pub
+
+            - name: 📤 Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ inputs.build_name }}-aab
+                  path: ${{ inputs.working_directory }}/build/app/outputs/bundle/release/app-release.aab
