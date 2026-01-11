@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class FactoryButton extends StatelessWidget {
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final IconData? icon;
   final bool isLoading;
 
   const FactoryButton({
     super.key,
     required this.label,
-    required this.onPressed,
+    this.onPressed,
     this.icon,
     this.isLoading = false,
   });

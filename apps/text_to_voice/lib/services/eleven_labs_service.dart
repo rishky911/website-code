@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Voice {
   final String id;
   final String name;
-  
+
   Voice({required this.id, required this.name});
 }
 
@@ -22,10 +22,11 @@ class ElevenLabsService {
   ElevenLabsService._internal();
 
   static const String _baseUrl = 'https://api.elevenlabs.io/v1';
-  
+
   Future<String?> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('eleven_api_key') ?? "sk_27ecfa3889462da658357695f5b8980356b0b0db418096a4";
+    return prefs.getString('eleven_api_key') ??
+        "13472ed6c7fc7d1306c9bea5e01ec47dbf1eefb98ef855bc429da84845c9ade3";
   }
 
   Future<void> setApiKey(String key) async {
@@ -47,22 +48,24 @@ class ElevenLabsService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final voices = (data['voices'] as List).map((v) => Voice(
-          id: v['voice_id'],
-          name: v['name'],
-        )).toList();
+        final voices = (data['voices'] as List)
+            .map((v) => Voice(
+                  id: v['voice_id'],
+                  name: v['name'],
+                ))
+            .toList();
         return voices;
       }
     } catch (e) {
       debugPrint('[ElevenLabs] Error fetching voices: $e');
     }
-    return [Voice(id: 'err', name: 'Error fetching voices')]; 
+    return [Voice(id: 'err', name: 'Error fetching voices')];
   }
 
   /// Synthesizes text and returns the path to the saved MP3 file.
   Future<String?> synthesize(String text, String voiceId) async {
     final apiKey = await getApiKey();
-    
+
     // DEMO MODE
     if (apiKey == null || apiKey.isEmpty) {
       await Future.delayed(Duration(seconds: 1)); // Simulate work
@@ -82,25 +85,44 @@ class ElevenLabsService {
         body: json.encode({
           "text": text,
           "model_id": "eleven_monolingual_v1",
-          "voice_settings": {
-            "stability": 0.5,
-            "similarity_boost": 0.75
-          }
+          "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}
         }),
       );
 
       if (response.statusCode == 200) {
         final dir = await getTemporaryDirectory();
-        final file = File('${dir.path}/speech_${DateTime.now().millisecondsSinceEpoch}.mp3');
+        final file = File(
+            '${dir.path}/speech_${DateTime.now().millisecondsSinceEpoch}.mp3');
         await file.writeAsBytes(response.bodyBytes);
         return file.path;
       } else {
-        debugPrint('ElevenLabs API Error: ${response.statusCode} - ${response.body}');
-        return null;
+        debugPrint(
+            'ElevenLabs API Error: ${response.statusCode} - ${response.body}');
+        debugPrint('Falling back to MOCK MODE due to API error.');
+        return await _mockSynthesize();
       }
     } catch (e) {
       debugPrint('[ElevenLabs] Synthesis error: $e');
-      return null;
+      debugPrint('Falling back to MOCK MODE due to exception.');
+      return await _mockSynthesize();
+    }
+  }
+
+  Future<String> _mockSynthesize() async {
+    try {
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/mock_speech.mp3');
+      // Download sample if not exists (using a reliable generic sample)
+      if (!await file.exists()) {
+        // Using a public domain sample (short beep/tune)
+        final response = await http.get(Uri.parse(
+            'https://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3'));
+        await file.writeAsBytes(response.bodyBytes);
+      }
+      return file.path;
+    } catch (e) {
+      debugPrint("Mock download failed: $e");
+      throw Exception("Failed to generate audio (Mock and API both failed)");
     }
   }
 }

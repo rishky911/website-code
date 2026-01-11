@@ -1,4 +1,3 @@
-```
 import 'package:flutter/material.dart';
 import 'package:ui_shell/ui_shell.dart';
 import '../services/eleven_labs_service.dart';
@@ -27,7 +26,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _saveKey() async {
     await ElevenLabsService().setApiKey(_apiKeyController.text);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('API Key Saved')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('API Key Saved')));
     }
   }
 
@@ -42,7 +42,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("ElevenLabs Configuration", style: Theme.of(context).textTheme.titleMedium),
+                Text("ElevenLabs Configuration",
+                    style: Theme.of(context).textTheme.titleMedium),
                 SizedBox(height: 16),
                 TextField(
                   controller: _apiKeyController,
