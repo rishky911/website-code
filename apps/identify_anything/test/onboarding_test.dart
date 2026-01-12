@@ -6,9 +6,19 @@ import 'package:onboarding_manager/onboarding_manager.dart';
 // Mock OnboardingService
 class MockOnboardingService extends Mock implements OnboardingService {
   bool _hasSeen = false;
-  
+
   @override
   bool get hasSeenOnboarding => _hasSeen;
+
+  @override
+  Future<void> completeOnboarding() async {
+    _hasSeen = true;
+  }
+
+  @override
+  Future<void> resetOnboarding() async {
+    _hasSeen = false;
+  }
 
   void setSeen(bool value) => _hasSeen = value;
 }
@@ -29,7 +39,8 @@ void main() {
 
     test('New user should see onboarding', () {
       mockService.setSeen(false);
-      expect(container.read(onboardingServiceProvider).hasSeenOnboarding, false);
+      expect(
+          container.read(onboardingServiceProvider).hasSeenOnboarding, false);
       // In a real widget test, we would check for navigation push
     });
 

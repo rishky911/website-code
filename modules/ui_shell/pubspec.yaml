@@ -2,7 +2,9 @@ name: ui_shell
 description: A new Flutter package project.
 version: 0.0.1
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 dependencies:
   flutter:
     sdk: flutter
+  flutter_riverpod: ^2.4.9
+  shared_preferences: ^2.2.2

@@ -2,7 +2,9 @@ name: analytics_wrapper
 description: A new Flutter package project.
 version: 0.0.1
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^2.24.2
+  firebase_analytics: ^10.8.0

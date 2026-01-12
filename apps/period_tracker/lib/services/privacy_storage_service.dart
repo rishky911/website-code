@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:math';
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import '../data/schema.dart';
@@ -18,7 +14,6 @@ class PrivacyStorageService {
   PrivacyStorageService._internal();
 
   Isar? _isar;
-  final _secureStorage = const FlutterSecureStorage();
 
   Future<void> init() async {
     if (_isar != null) return;

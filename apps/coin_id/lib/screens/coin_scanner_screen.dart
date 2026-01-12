@@ -51,13 +51,14 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
     try {
       final image = await _controller!.takePicture();
       final inputImage = InputImage.fromFilePath(image.path);
-      
+
       // 1. Identify Coin
-      final prediction = await CoinRecognitionService().identifyCoin(inputImage);
-      
+      final prediction =
+          await CoinRecognitionService().identifyCoin(inputImage);
+
       // 2. Get Valuation
       final details = await NumistaService().getCoinDetails(prediction.label);
-      
+
       if (mounted) {
         setState(() => _isProcessing = false);
         _showCoinDetails(prediction, details);
@@ -84,20 +85,29 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
             children: [
               Center(
                 child: Container(
-                  width: 60, height: 6,
-                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(3)),
+                  width: 60,
+                  height: 6,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(3)),
                 ),
               ),
               SizedBox(height: 24),
               Text(
                 details.title,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 8),
               Text(
                 "Confidence: ${(prediction.confidence * 100).toStringAsFixed(0)}%",
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: Colors.grey),
                 textAlign: TextAlign.center,
               ),
               Divider(height: 32),
@@ -107,22 +117,31 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
               Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
+                  color: FactoryColors.primary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.green),
                 ),
                 child: Column(
                   children: [
-                    Text("Estimated Value", style: TextStyle(color: Colors.green[700], fontWeight: FontWeight.bold)),
+                    Text("Estimated Value",
+                        style: TextStyle(
+                            color: Colors.green[700],
+                            fontWeight: FontWeight.bold)),
                     SizedBox(height: 4),
-                    Text(details.value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green[900])),
+                    Text(details.value,
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green[900])),
                   ],
                 ),
               ),
               SizedBox(height: 24),
-              Text("Description", style: Theme.of(context).textTheme.titleSmall),
+              Text("Description",
+                  style: Theme.of(context).textTheme.titleSmall),
               SizedBox(height: 8),
-              Text(details.description, style: Theme.of(context).textTheme.bodyMedium),
+              Text(details.description,
+                  style: Theme.of(context).textTheme.bodyMedium),
               SizedBox(height: 32),
               FactoryButton(
                 label: "Scan Another",
@@ -169,18 +188,21 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
         children: [
           // Camera
           SizedBox.expand(child: CameraPreview(_controller!)),
-          
+
           // Reference Overlay (Coin Circle) with pulse effect (simulated via simple transparency for now)
           Center(
             child: Container(
-              width: 280, height: 280,
+              width: 280,
+              height: 280,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withOpacity(0.8), width: 2),
-                boxShadow: [
-                   BoxShadow(color: Colors.black45, spreadRadius: 1000) // Vignette effect mask
-                ]
-              ),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: Colors.black.withValues(alpha: 0.5), width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black45,
+                        spreadRadius: 1000) // Vignette effect mask
+                  ]),
             ),
           ),
 
@@ -192,10 +214,15 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(20)),
                     child: Text(
                       "Align coin within circle",
-                      style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -207,24 +234,29 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
                     onTap: _snapAndIdentify,
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 200),
-                      width: 80, height: 80,
+                      width: 80,
+                      height: 80,
                       decoration: BoxDecoration(
-                        color: _isProcessing ? Colors.white : Colors.transparent,
+                        color:
+                            _isProcessing ? Colors.white : Colors.transparent,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 4),
                       ),
                       child: Center(
-                         child: _isProcessing 
-                          ? Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator(strokeWidth: 2))
-                          : Container(
-                              width: 64,
-                              height: 64,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
+                        child: _isProcessing
+                            ? Padding(
+                                padding: EdgeInsets.all(20),
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2))
+                            : Container(
+                                width: 64,
+                                height: 64,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(Icons.search, color: Colors.black),
                               ),
-                              child: Icon(Icons.search, color: Colors.black),
-                            ),
                       ),
                     ),
                   ),
@@ -232,10 +264,11 @@ class _CoinScannerScreenState extends State<CoinScannerScreen> {
               ],
             ),
           ),
-          
+
           // Back Button
           Positioned(
-            top: 48, left: 16,
+            top: 48,
+            left: 16,
             child: CircleAvatar(
               backgroundColor: Colors.black45,
               child: IconButton(

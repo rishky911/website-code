@@ -135,7 +135,6 @@ class _ReaderScreenState extends State<ReaderScreen>
 
             // Visualizer & Controls
             StreamBuilder(
-                // TODO: Fix type
                 stream: AudioPlayerService().playerStateStream,
                 builder: (context, snapshot) {
                   // final playerState = snapshot.data;

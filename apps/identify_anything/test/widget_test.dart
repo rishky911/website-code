@@ -6,25 +6,45 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:identify_anything/main.dart';
+import 'package:subscription_manager/subscription_manager.dart';
+import 'package:onboarding_manager/onboarding_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class FakeSubscriptionService extends Fake implements SubscriptionService {
+  @override
+  Future<void> init(String apiKey) async {}
+}
+
+class FakeOnboardingService extends Fake implements OnboardingService {
+  @override
+  bool get hasSeenOnboarding => true;
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('App boots up successfully', (WidgetTester tester) async {
+    // Mock SharedPreferences for ThemeProvider
+    SharedPreferences.setMockInitialValues({});
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    final fakeSub = FakeSubscriptionService();
+    final fakeOnboarding = FakeOnboardingService();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          subscriptionServiceProvider.overrideWith((ref) => fakeSub),
+          onboardingServiceProvider.overrideWith((ref) => fakeOnboarding),
+        ],
+        child: const FactoryApp(),
+      ),
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Trigger a frame
+    await tester.pumpAndSettle();
+
+    // Verify MaterialApp exists
+    expect(find.byType(MaterialApp), findsOneWidget);
   });
 }

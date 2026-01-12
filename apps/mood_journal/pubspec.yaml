@@ -29,6 +29,8 @@ dependencies:
     path: ../../modules/ui_shell
   analytics_wrapper:
     path: ../../modules/analytics_wrapper
+  onboarding_manager:
+    path: ../../modules/onboarding_manager
 
 dev_dependencies:
   flutter_test:

@@ -19,7 +19,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
   CameraController? _controller;
   bool _isCameraInitialized = false;
   bool _isProcessing = false;
-  String _resultText = "Point at something...";
+
   ScanMode _currentMode = ScanMode.object;
 
   @override
@@ -65,14 +65,14 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
     try {
       final image = await _controller!.takePicture();
       _scanCount++; // Increment usage
-      
+
       final inputImage = InputImage.fromFilePath(image.path);
-      
-      final result = await VisionService().processImage(inputImage, _currentMode);
-      
+
+      final result =
+          await VisionService().processImage(inputImage, _currentMode);
+
       if (mounted) {
         setState(() {
-          _resultText = result;
           _isProcessing = false;
         });
         _showResultSheet(result);
@@ -91,7 +91,8 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
           featureName: "Unlimited Scans",
           onSuccess: () {
             Navigator.pop(context); // Close paywall
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You are now Pro! scanning...")));
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("You are now Pro! scanning...")));
             _snapAndAnalyze(); // Retrieve the scan they tried to do? Or just let them click again.
           },
         ),
@@ -142,19 +143,23 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
                 ),
               ),
               SizedBox(height: 24),
-              Icon(Icons.auto_awesome, color: FactoryColors.secondary, size: 32),
+              Icon(Icons.auto_awesome,
+                  color: FactoryColors.secondary, size: 32),
               SizedBox(height: 16),
               Text(
                 "Analysis Complete",
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.grey),
+                style: Theme.of(context)
+                    .textTheme
+                    .labelLarge
+                    ?.copyWith(color: Colors.grey),
               ),
               SizedBox(height: 8),
               Text(
                 result,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: FactoryColors.primary,
-                ),
+                      fontWeight: FontWeight.bold,
+                      color: FactoryColors.primary,
+                    ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 24),
@@ -188,7 +193,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
         children: [
           // Camera Layer
           SizedBox.expand(child: CameraPreview(_controller!)),
-          
+
           // Overlay Gradient
           Positioned.fill(
             child: Container(
@@ -213,7 +218,8 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
               children: [
                 // Top Bar: Back + Pro Status
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -226,7 +232,8 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
                       Spacer(),
                       if (!isPro)
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             color: remaining > 0 ? Colors.black54 : Colors.red,
                             borderRadius: BorderRadius.circular(20),
@@ -234,11 +241,15 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
                           ),
                           child: Row(
                             children: [
-                              Icon(Icons.bolt, color: FactoryColors.tertiary, size: 16),
+                              Icon(Icons.bolt,
+                                  color: FactoryColors.tertiary, size: 16),
                               SizedBox(width: 4),
                               Text(
                                 "$remaining Free Scans",
-                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -276,21 +287,25 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: _isProcessing ? Colors.white : Colors.transparent,
+                        color:
+                            _isProcessing ? Colors.white : Colors.transparent,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 4),
                       ),
                       child: Center(
-                        child: _isProcessing 
-                          ? Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator(strokeWidth: 2))
-                          : Container(
-                              width: 64,
-                              height: 64,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
+                        child: _isProcessing
+                            ? Padding(
+                                padding: EdgeInsets.all(20),
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2))
+                            : Container(
+                                width: 64,
+                                height: 64,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
-                            ),
                       ),
                     ),
                   ),

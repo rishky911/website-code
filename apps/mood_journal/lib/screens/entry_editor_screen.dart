@@ -20,9 +20,9 @@ class _EntryEditorScreenState extends State<EntryEditorScreen> {
   Future<void> _analyze() async {
     if (_textController.text.isEmpty) return;
     setState(() => _isAnalyzing = true);
-    
+
     final result = await SentimentService().analyze(_textController.text);
-    
+
     if (mounted) {
       setState(() {
         _aiFeedback = result;
@@ -37,7 +37,7 @@ class _EntryEditorScreenState extends State<EntryEditorScreen> {
       ..moodScore = _mood.round()
       ..text = _textController.text
       ..sentimentAnalysis = _aiFeedback;
-      
+
     await JournalService().addEntry(entry);
     if (mounted) Navigator.pop(context);
   }
@@ -55,7 +55,8 @@ class _EntryEditorScreenState extends State<EntryEditorScreen> {
             FactoryCard(
               child: Column(
                 children: [
-                  Text("How are you feeling?", style: Theme.of(context).textTheme.titleMedium),
+                  Text("How are you feeling?",
+                      style: Theme.of(context).textTheme.titleMedium),
                   SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,7 +79,7 @@ class _EntryEditorScreenState extends State<EntryEditorScreen> {
               ),
             ),
             SizedBox(height: 16),
-            
+
             // Text Input
             TextField(
               controller: _textController,
@@ -91,41 +92,50 @@ class _EntryEditorScreenState extends State<EntryEditorScreen> {
               ),
             ),
             SizedBox(height: 16),
-            
+
             // AI Analysis Section
             if (_aiFeedback != null)
               Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.purple.withOpacity(0.1),
+                  color: Colors.purple.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.purple.withOpacity(0.3)),
+                  border:
+                      Border.all(color: Colors.purple.withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.auto_awesome, size: 16, color: Colors.purple),
+                        Icon(Icons.auto_awesome,
+                            size: 16, color: Colors.purple),
                         SizedBox(width: 8),
-                        Text("AI Insight", style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold)),
+                        Text("AI Insight",
+                            style: TextStyle(
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                     SizedBox(height: 8),
-                    Text(_aiFeedback!, style: TextStyle(fontStyle: FontStyle.italic)),
+                    Text(_aiFeedback!,
+                        style: TextStyle(fontStyle: FontStyle.italic)),
                   ],
                 ),
               ),
-            
+
             SizedBox(height: 24),
             Row(
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: _isAnalyzing ? null : _analyze,
-                    icon: _isAnalyzing 
-                      ? SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) 
-                      : Icon(Icons.auto_awesome),
+                    icon: _isAnalyzing
+                        ? SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2))
+                        : Icon(Icons.auto_awesome),
                     label: Text("Analyze"),
                   ),
                 ),

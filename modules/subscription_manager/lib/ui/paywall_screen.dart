@@ -8,7 +8,7 @@ class PaywallScreen extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
 
   const PaywallScreen({
-    super.key, 
+    super.key,
     required this.featureName,
     this.onSuccess,
   });
@@ -48,7 +48,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       if (ref.read(subscriptionServiceProvider).isPro) {
         Navigator.pop(context);
       } else {
-         ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('No active subscriptions found')),
         );
       }
@@ -78,28 +78,35 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
             SizedBox(height: 40),
-            
+
             // Pricing Card
             Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 border: Border.all(color: FactoryColors.primary, width: 2),
                 borderRadius: BorderRadius.circular(16),
-                color: FactoryColors.primary.withOpacity(0.05),
+                color: FactoryColors.primary.withValues(alpha: 0.05),
               ),
               child: Column(
                 children: [
-                  Text("YEARLY ACCESS", style: TextStyle(fontWeight: FontWeight.bold, color: FactoryColors.primary)),
+                  Text("YEARLY ACCESS",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: FactoryColors.primary)),
                   SizedBox(height: 8),
-                  Text("\$39.99 / year", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  Text("\$39.99 / year",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(height: 8),
-                  Text("Best Value (Save 30%)", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                  Text("Best Value (Save 30%)",
+                      style: TextStyle(
+                          color: Colors.green, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-            
+
             SizedBox(height: 48),
-            
+
             FactoryButton(
               label: _isLoading ? "Processing..." : "Subscribe Now",
               isLoading: _isLoading,

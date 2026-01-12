@@ -83,6 +83,7 @@ class SubscriptionService extends ChangeNotifier {
       if (offerings.current != null &&
           offerings.current!.availablePackages.isNotEmpty) {
         final package = offerings.current!.availablePackages.first;
+        // ignore: deprecated_member_use
         final result = await Purchases.purchasePackage(package);
         final customerInfo = result.customerInfo;
         _updateEntitlement(customerInfo);

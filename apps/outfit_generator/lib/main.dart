@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui_shell/ui_shell.dart';
+import 'package:analytics_wrapper/analytics_wrapper.dart';
 import 'router.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AnalyticsWrapper().initialize();
   runApp(
     const ProviderScope(
       child: FactoryApp(),
@@ -20,8 +23,8 @@ class FactoryApp extends ConsumerWidget {
       title: 'Factory App',
       theme: FactoryTheme.lightTheme,
       darkTheme: FactoryTheme.darkTheme,
-      themeMode: ThemeMode.system, // TODO: Connect to settings provider
-      routerConfig: appRouter,
+      themeMode: ref.watch(themeProvider),
+      routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
     );
   }

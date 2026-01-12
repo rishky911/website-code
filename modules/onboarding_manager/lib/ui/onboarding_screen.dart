@@ -61,14 +61,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           padding: EdgeInsets.all(32),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: FactoryColors.primary.withOpacity(0.1),
+                            color: FactoryColors.primary.withValues(alpha: 0.1),
                           ),
-                          child: Icon(page.icon, size: 80, color: FactoryColors.primary),
+                          child: Icon(page.icon,
+                              size: 80, color: FactoryColors.primary),
                         ),
                         SizedBox(height: 48),
                         Text(
                           page.title,
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -86,7 +90,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 },
               ),
             ),
-            
+
             // Indicators
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -98,19 +102,24 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   height: 8,
                   width: _currentPage == index ? 24 : 8,
                   decoration: BoxDecoration(
-                    color: _currentPage == index ? FactoryColors.primary : Colors.white24,
+                    color: _currentPage == index
+                        ? FactoryColors.primary
+                        : Colors.white24,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ),
             ),
-            
+
             SizedBox(height: 32),
-            
+
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
               child: FactoryButton(
-                label: _currentPage == widget.pages.length - 1 ? "Get Started" : "Next",
+                label: _currentPage == widget.pages.length - 1
+                    ? "Get Started"
+                    : "Next",
                 onPressed: () {
                   if (_currentPage < widget.pages.length - 1) {
                     _controller.nextPage(

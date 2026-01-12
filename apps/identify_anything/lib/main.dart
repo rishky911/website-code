@@ -6,10 +6,11 @@ import 'router.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:onboarding_manager/onboarding_manager.dart';
+import 'package:analytics_wrapper/analytics_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Init RevenueCat
   final subscriptionService = SubscriptionService();
   await subscriptionService.init("sk_hBvxmhjvyQOqPycfDvulkovRHOFSS");
@@ -17,6 +18,9 @@ void main() async {
   // Init Onboarding
   final prefs = await SharedPreferences.getInstance();
   final onboardingService = OnboardingService(prefs);
+
+  // Init Analytics
+  await AnalyticsWrapper().initialize();
 
   runApp(
     ProviderScope(
@@ -38,8 +42,8 @@ class FactoryApp extends ConsumerWidget {
       title: 'Factory App',
       theme: FactoryTheme.lightTheme,
       darkTheme: FactoryTheme.darkTheme,
-      themeMode: ThemeMode.system, // TODO: Connect to settings provider
-      routerConfig: appRouter,
+      themeMode: ref.watch(themeProvider),
+      routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
     );
   }
